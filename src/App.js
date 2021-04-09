@@ -1,10 +1,15 @@
-import Button from '@material-ui/core/Button';
+import React from 'react';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import theme from "./theme/MuiTheme";
+import Navigator from "./components/Navbar"
 
 function App() {
   return (
-    <Button variant="contained" color="primary">
-      Hello World
-    </Button>
+    <React.StrictMode>
+      <MuiThemeProvider theme={theme}>
+        <Navigator />
+      </MuiThemeProvider>
+    </React.StrictMode>
   );
 }
 
