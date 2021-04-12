@@ -1,13 +1,16 @@
-import React from 'react';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import React from "react";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core/styles";
 import theme from "./theme/MuiTheme";
-import Navigator from "./components/Navbar"
+import Navigator from "./components/Navbar";
+import MainSection from "./MainSection";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <React.StrictMode>
       <MuiThemeProvider theme={theme}>
         <Navigator />
+        <Footer />
       </MuiThemeProvider>
     </React.StrictMode>
   );
