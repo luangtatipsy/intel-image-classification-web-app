@@ -48,9 +48,7 @@ export default function Navigator() {
               className={classes.menuButton}
               color="inherit"
               aria-label="menu"
-            >
-              <MenuIcon />
-            </IconButton>
+            ></IconButton>
             <img src={logo} alt="logo" className={classes.logo} />
             <Typography variant="h6" className={classes.title}></Typography>
 
