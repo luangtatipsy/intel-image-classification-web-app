@@ -11,8 +11,8 @@ import InstagramIcon from "@material-ui/icons/Instagram";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5),
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText,
   },
