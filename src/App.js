@@ -10,6 +10,7 @@ function App() {
     <React.StrictMode>
       <MuiThemeProvider theme={theme}>
         <Navigator />
+        <MainSection />
         <Footer />
       </MuiThemeProvider>
     </React.StrictMode>
