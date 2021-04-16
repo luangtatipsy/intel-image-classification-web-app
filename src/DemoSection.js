@@ -1,9 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Grid, Typography } from "@material-ui/core";
-
-// import Gallery from "./components/Gallery";
-import Gallery from "./components/Todo";
+import { Button, Container, Grid, Typography } from "@material-ui/core";
+import PredictionBox from "./components/PredictionBox";
+import Gallery from "./components/Gallery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
   gallery: {
     // backgroundColor: "red",
+  },
+  predictButton: {
+    fontWeight: "bold",
   },
   result: {
     // backgroundColor: "green",
@@ -37,7 +39,17 @@ export default function Demo() {
           <Grid className={classes.gallery} item xs={12} sm={8}>
             <Gallery />
           </Grid>
-          <Grid className={classes.result} item xs={12} sm={4}></Grid>
+          <Grid className={classes.result} item xs={12} sm={4}>
+            <Button
+              className={classes.predictButton}
+              variant="contained"
+              color="secondary"
+              fullWidth
+            >
+              predict
+            </Button>
+            <PredictionBox />
+          </Grid>
         </Grid>
       </Container>
     </div>
