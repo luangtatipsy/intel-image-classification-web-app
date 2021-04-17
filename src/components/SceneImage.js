@@ -2,8 +2,9 @@ import React from "react";
 import { withStyles } from "@material-ui/styles";
 import Paper from "@material-ui/core/Paper";
 import Image from "material-ui-image";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   wrapper: {
     "&:hover": {
       cursor: "pointer",
@@ -14,43 +15,24 @@ const useStyles = (theme) => ({
     borderStyle: "solid",
     borderColor: theme.palette.primary.main,
   },
-});
+}));
 
-class SceneImage extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      isSelected: false,
-    };
-    this.handleClick = this.handleClick.bind(this);
-  }
+export default function SceneImage(props) {
+  const classes = useStyles();
 
-  handleClick() {
-    this.setState((prevState) => {
-      console.log(prevState);
-      return {
-        isSelected: !prevState.isSelected,
-      };
-    });
-  }
-
-  render() {
-    const { classes } = this.props;
-    let selectedClass = this.state.isSelected ? classes.selected : "";
-
-    return (
-      <React.Fragment>
-        <Paper
-          className={`${classes.wrapper} ${selectedClass}`}
-          variant="elevation"
-          square
-          onClick={this.handleClick}
-        >
-          <Image src={this.props.src} />
-        </Paper>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <Paper
+        className={`${classes.wrapper} ${
+          props.image.selected ? classes.selected : ""
+        }`}
+        variant="elevation"
+        square
+        selected={props.image.selected}
+        onClick={() => props.handleClick(props.image.id)}
+      >
+        <Image src={props.image.src} />
+      </Paper>
+    </React.Fragment>
+  );
 }
-
-export default withStyles(useStyles)(SceneImage);

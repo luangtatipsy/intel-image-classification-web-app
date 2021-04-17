@@ -1,9 +1,8 @@
 import React from "react";
 import { withStyles } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import Image from "material-ui-image";
 import SceneImage from "./SceneImage";
+import imagesData from "./imagesData";
 import "./Gallery.css";
 
 const useStyles = (theme) => ({
@@ -22,107 +21,45 @@ const useStyles = (theme) => ({
       cursor: "pointer",
     },
   },
-  selected: {
-    border: "2px solid blue",
-  },
 });
-
-const imageArray = [
-  {
-    src: process.env.PUBLIC_URL + "/images/3.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/5.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/6.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/11.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/14.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/3.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/5.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/6.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/11.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/14.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/3.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/5.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/6.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/11.jpg",
-    title: "Image",
-    author: "author",
-  },
-  {
-    src: process.env.PUBLIC_URL + "/images/14.jpg",
-    title: "Image",
-    author: "author",
-  },
-];
 
 class Gallery extends React.Component {
   constructor() {
     super();
     this.state = {
-      imageId: 0,
+      images: imagesData,
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(props) {
-    console.log(props);
+  handleClick(id) {
+    const updatedImages = this.state.images.map((image) => {
+      if (image.id === id) {
+        return {
+          ...image,
+          selected: true,
+        };
+      }
+      return {
+        ...image,
+        selected: false,
+      };
+    });
+
+    return this.setState({
+      images: updatedImages,
+    });
   }
 
   render() {
     const { classes } = this.props;
-    const images = imageArray.map((image, idx) => (
-      <Grid key={idx} className={classes.imageWrapper} item xs={3}>
-        <SceneImage key={idx} src={image.src} />
+    const images = this.state.images.map((image) => (
+      <Grid key={image.id} className={classes.imageWrapper} item xs={3}>
+        <SceneImage
+          key={image.id}
+          image={image}
+          handleClick={this.handleClick}
+        />
       </Grid>
     ));
 
