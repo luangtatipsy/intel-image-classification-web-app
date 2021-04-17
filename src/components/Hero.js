@@ -38,7 +38,7 @@ export default function Hero() {
       <Container maxWidth="lg">
         <Grid container xs={12} alignItems="center">
           <Grid item sm={6}>
-            <img className={classes.heroSvg} src={heroSvg} />
+            <img className={classes.heroSvg} alt="hero" src={heroSvg} />
           </Grid>
           <Grid item sm={6} justify="flex-end">
             <Typography className={classes.tagline} variant="h4" align="right">
