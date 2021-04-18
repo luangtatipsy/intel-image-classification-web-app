@@ -13,8 +13,14 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(1),
   },
   title: {
-    marginBottom: theme.spacing(10),
+    marginBottom: theme.spacing(5),
     fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  subtitle: {
+    marginBottom: theme.spacing(1),
+    fontWeight: "bold",
+    textTransform: "uppercase",
   },
   gallery: {
     // backgroundColor: "red",
@@ -22,9 +28,7 @@ const useStyles = makeStyles((theme) => ({
   predictButton: {
     fontWeight: "bold",
   },
-  result: {
-    // backgroundColor: "green",
-  },
+  prediction: {},
 }));
 
 export default function Demo() {
@@ -33,13 +37,20 @@ export default function Demo() {
     <div className={classes.root}>
       <Container>
         <Typography className={classes.title} variant="h4" align="center">
-          LIVE DEMO
+          live demo
         </Typography>
-        <Grid container direction="row">
+        <Grid container direction="row" alignItems="center">
           <Grid className={classes.gallery} item xs={12} sm={8}>
+            <Typography
+              className={classes.subtitle}
+              variant="h5"
+              align="center"
+            >
+              choose an image
+            </Typography>
             <Gallery />
           </Grid>
-          <Grid className={classes.result} item xs={12} sm={4}>
+          <Grid className={classes.prediction} item xs={12} sm={4}>
             <Button
               className={classes.predictButton}
               variant="contained"
