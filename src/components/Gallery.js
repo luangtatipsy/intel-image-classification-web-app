@@ -16,6 +16,11 @@ const useStyles = (theme) => ({
     width: 500,
     height: 450,
   },
+  inputImage: {
+    width: 150,
+    height: 150,
+    display: "None",
+  },
   imagePaper: {
     "&:hover": {
       cursor: "pointer",
@@ -28,13 +33,16 @@ class Gallery extends React.Component {
     super();
     this.state = {
       images: imagesData,
+      currentImage: null,
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(id) {
+    let currentImage;
     const updatedImages = this.state.images.map((image) => {
       if (image.id === id) {
+        currentImage = image.src;
         return {
           ...image,
           selected: true,
@@ -47,6 +55,7 @@ class Gallery extends React.Component {
     });
 
     return this.setState({
+      currentImage: currentImage,
       images: updatedImages,
     });
   }
@@ -65,6 +74,7 @@ class Gallery extends React.Component {
 
     return (
       <div className={classes.root}>
+        <img className={classes.inputImage} src={this.state.currentImage} />
         <Grid container xs={12} item alignItems="center" justify="center">
           {images}
         </Grid>
