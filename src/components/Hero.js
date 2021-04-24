@@ -36,11 +36,11 @@ export default function Hero() {
   return (
     <div className={classes.root}>
       <Container maxWidth="lg">
-        <Grid container xs={12} alignItems="center">
+        <Grid container alignItems="center" justify="flex-end">
           <Grid item sm={6}>
             <img className={classes.heroSvg} alt="hero" src={heroSvg} />
           </Grid>
-          <Grid item sm={6} justify="flex-end">
+          <Grid item sm={6}>
             <Typography className={classes.tagline} variant="h4" align="right">
               making computer seeing like human vision
             </Typography>
