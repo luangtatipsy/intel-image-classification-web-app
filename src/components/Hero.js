@@ -61,9 +61,9 @@ export default function Hero() {
                 variant="subtitle1"
                 align="right"
               >
-                This pretrained model classifies an scene image at a time into
-                these following categories: buildings, forest, glacier,
-                mountain, sea, street.
+                This pre-trained model classifies a scene image at a time into
+                the following categories: buildings, forest, glacier, mountain,
+                sea, street.
               </Typography>
             </Grow>
           </Grid>
