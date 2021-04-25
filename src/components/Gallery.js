@@ -4,15 +4,9 @@ import Grid from "@material-ui/core/Grid";
 import SceneImage from "./SceneImage";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
+  root: {},
   imageWrapper: {
     margin: theme.spacing(1),
-  },
-  gridList: {
-    width: 500,
-    height: 450,
   },
   imagePaper: {
     "&:hover": {
