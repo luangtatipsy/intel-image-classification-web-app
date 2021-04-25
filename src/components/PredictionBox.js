@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Card, CardContent, Typography } from "@material-ui/core";
+import { Box, Card, CardContent } from "@material-ui/core";
 import LoadingOverlay from "react-loading-overlay";
 import BeatLoader from "react-spinners/BeatLoader";
 
@@ -34,29 +34,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PredictionBox(props) {
   const classes = useStyles();
-  console.log(props.onLoading);
 
   return (
-    <Card className={classes.root} variant="outlined" justifyContent="center">
+    <Card className={classes.root} variant="outlined">
       <CardContent className={props.onLoading ? classes.hidden : classes.show}>
         <Box className={classes.title} fontFamily="Monospace">
           #result
         </Box>
         <Box fontFamily="Monospace" fontSize={16}>
           "prediction":&nbsp;
-          <Typography className={classes.scene} variant="span">
+          <span className={classes.scene}>
             {props.result.prediction === null
               ? "null"
               : props.result.prediction}
-          </Typography>
+          </span>
         </Box>
         <Box fontFamily="Monospace" fontSize={16}>
           "confidence":&nbsp;
-          <Typography className={classes.confidence} variant="span">
+          <span className={classes.confidence}>
             {props.result.confidence === null
               ? "null"
               : props.result.confidence}
-          </Typography>
+          </span>
         </Box>
       </CardContent>
       <CardContent className={props.onLoading ? classes.show : classes.hidden}>
