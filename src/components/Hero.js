@@ -1,4 +1,11 @@
-import { Container, Grid, Typography, Fade, Grow } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Typography,
+  Fade,
+  Grow,
+  Hidden,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
@@ -41,9 +48,11 @@ export default function Hero() {
       <Container maxWidth="lg">
         <Grid container alignItems="center" justify="center">
           <Grid item xs={12} lg={6}>
-            <Fade in timeout={2000} disableStrictModeCompat={true}>
-              <img className={classes.heroSvg} alt="hero" src={heroSvg} />
-            </Fade>
+            <Hidden only="xs">
+              <Fade in timeout={2000} disableStrictModeCompat={true}>
+                <img className={classes.heroSvg} alt="hero" src={heroSvg} />
+              </Fade>
+            </Hidden>
           </Grid>
           <Grid item xs={12} lg={6}>
             <Grow in timeout={3000} disableStrictModeCompat={true}>
