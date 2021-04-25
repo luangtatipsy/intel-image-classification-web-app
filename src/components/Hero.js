@@ -1,4 +1,4 @@
-import { Container, Grid, Typography, Button } from "@material-ui/core";
+import { Container, Grid, Typography, Fade, Grow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
   },
   heroSvg: {
     height: "55vh",
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   tagline: {
     textTransform: "uppercase",
@@ -36,30 +39,33 @@ export default function Hero() {
   return (
     <div className={classes.root}>
       <Container maxWidth="lg">
-        <Grid container alignItems="center" justify="flex-end">
-          <Grid item sm={6}>
-            <img className={classes.heroSvg} alt="hero" src={heroSvg} />
+        <Grid container alignItems="center" justify="center">
+          <Grid item xs={12} lg={6}>
+            <Fade in timeout={2000} disableStrictModeCompat={true}>
+              <img className={classes.heroSvg} alt="hero" src={heroSvg} />
+            </Fade>
           </Grid>
-          <Grid item sm={6}>
-            <Typography className={classes.tagline} variant="h4" align="right">
-              making computer seeing like human vision
-            </Typography>
-            <Typography
-              className={classes.subHeading}
-              variant="subtitle1"
-              align="right"
-            >
-              This pretrained model classifies an scene image at a time into
-              these following categories: buildings, forest, glacier, mountain,
-              sea, street.
-            </Typography>
-            <Button
-              className={classes.tryButton}
-              variant="contained"
-              color="secondary"
-            >
-              TRY IT
-            </Button>
+          <Grid item xs={12} lg={6}>
+            <Grow in timeout={3000} disableStrictModeCompat={true}>
+              <Typography
+                className={classes.tagline}
+                variant="h4"
+                align="right"
+              >
+                making computer seeing like human vision
+              </Typography>
+            </Grow>
+            <Grow in timeout={4000} disableStrictModeCompat={true}>
+              <Typography
+                className={classes.subHeading}
+                variant="subtitle1"
+                align="right"
+              >
+                This pretrained model classifies an scene image at a time into
+                these following categories: buildings, forest, glacier,
+                mountain, sea, street.
+              </Typography>
+            </Grow>
           </Grid>
         </Grid>
       </Container>

@@ -45,7 +45,7 @@ export default function Footer() {
         justify="space-around"
         alignItems="center"
       >
-        <Grid item xs={12} sm={4} align="left">
+        <Grid item xs={12} sm={4} align="center">
           <Typography
             className={classes.copyright}
             variant="button"
@@ -54,7 +54,7 @@ export default function Footer() {
             Made by luangtatipsy © {currentYear}
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={4} align="right">
+        <Grid item xs={12} sm={4} align="center">
           <IconButton
             className={classes.socialButton}
             component="span"
