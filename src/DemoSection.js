@@ -1,10 +1,12 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 import PredictionBox from "./components/PredictionBox";
 import Gallery from "./components/Gallery";
+import imagesData from "./components/imagesData";
+import * as tf from "@tensorflow/tfjs";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (theme) => ({
   root: {
     paddingTop: theme.spacing(5),
     paddingBottom: theme.spacing(5),
@@ -13,56 +15,198 @@ const useStyles = makeStyles((theme) => ({
     gridGap: theme.spacing(1),
   },
   title: {
-    marginBottom: theme.spacing(5),
+    marginBottom: theme.spacing(2),
     fontWeight: "bold",
     textTransform: "uppercase",
+    color: theme.palette.primary.dark,
+  },
+  divider: {
+    marginBottom: theme.spacing(5),
+    border: `7px solid ${theme.palette.primary.light}`,
+    width: "20%",
   },
   subtitle: {
     marginBottom: theme.spacing(1),
     fontWeight: "bold",
-    textTransform: "uppercase",
+    color: theme.palette.primary.dark,
   },
-  gallery: {
-    // backgroundColor: "red",
+  inputImage: {
+    width: 150,
+    height: 150,
+    display: "none",
   },
   predictButton: {
     fontWeight: "bold",
+    marginTop: theme.spacing(1),
+    color: theme.palette.primary.contrastText,
   },
-  prediction: {},
-}));
+  overlay: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    backgroundColor: "#E0E0E0",
+    height: 115,
+  },
+});
 
-export default function Demo() {
-  const classes = useStyles();
-  return (
-    <div className={classes.root}>
-      <Container>
-        <Typography className={classes.title} variant="h4" align="center">
-          live demo
-        </Typography>
-        <Grid container direction="row" alignItems="center">
-          <Grid className={classes.gallery} item xs={12} sm={8}>
-            <Typography
-              className={classes.subtitle}
-              variant="h5"
-              align="center"
-            >
-              choose an image
-            </Typography>
-            <Gallery />
+class Demo extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      images: imagesData.map((image) => {
+        return {
+          ...image,
+          selected: false,
+        };
+      }),
+      currentImage: null,
+      result: {
+        prediction: null,
+        confidence: null,
+      },
+      onLoading: false,
+    };
+
+    this.modelUrl =
+      "https://cdn.jsdelivr.net/gh/luangtatipsy/intel-image-classification-web-app/public/models/intel_img_clf_best_weight.js/model.json";
+    this.targets = [
+      "buildings",
+      "forest",
+      "glacier",
+      "mountain",
+      "sea",
+      "street",
+    ];
+
+    this.handleImageClick = this.handleImageClick.bind(this);
+    this.handlePredictionClick = this.handlePredictionClick.bind(this);
+  }
+
+  handleImageClick(id) {
+    let currentImage;
+    const updatedImages = this.state.images.map((image) => {
+      if (image.id === id) {
+        currentImage = image.src;
+        return {
+          ...image,
+          selected: true,
+        };
+      }
+      return {
+        ...image,
+        selected: false,
+      };
+    });
+
+    return this.setState({
+      currentImage: currentImage,
+      images: updatedImages,
+    });
+  }
+
+  readImage(inputImage) {
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+
+    context.drawImage(inputImage, 0, 0);
+
+    return context.getImageData(0, 0, inputImage.width, inputImage.height);
+  }
+
+  async handlePredictionClick() {
+    this.setState((prevState) => {
+      return {
+        images: prevState.images,
+        currentImage: prevState.currentImage,
+        result: prevState.result,
+        onLoading: true,
+      };
+    });
+
+    const model = await tf.loadLayersModel(this.modelUrl);
+    const inputImage = document.getElementById("input-image");
+    const imageData = this.readImage(inputImage);
+    const imageTensor = tf.browser
+      .fromPixels(imageData)
+      .toFloat()
+      .div(tf.scalar(127.5))
+      .sub(tf.scalar(1.0))
+      .expandDims(0);
+    const prediction = model.predict(imageTensor);
+    const maxIdx = prediction.argMax(-1).dataSync()[0];
+    const probabilities = prediction.data();
+    const result = await probabilities.then((probabilities) => {
+      return {
+        prediction: this.targets[maxIdx],
+        confidence: Math.max(...probabilities).toFixed(3),
+      };
+    });
+
+    this.setState((prevState) => {
+      return {
+        images: prevState.images,
+        currentImage: prevState.currentImage,
+        result: result,
+        onLoading: false,
+      };
+    });
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <Container>
+          <Typography className={classes.title} variant="h4" align="center">
+            live demo
+          </Typography>
+          <hr className={classes.divider} />
+          <Grid container direction="row">
+            <Grid item xs={12} sm={7}>
+              <Typography
+                className={classes.subtitle}
+                variant="h5"
+                align="center"
+              >
+                Choose an Image
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid className={classes.prediction} item xs={12} sm={4}>
-            <Button
-              className={classes.predictButton}
-              variant="contained"
-              color="secondary"
-              fullWidth
-            >
-              predict
-            </Button>
-            <PredictionBox />
+
+          <Grid container direction="row" alignItems="flex-start">
+            <Grid className={classes.gallery} item xs={12} sm={7}>
+              <img
+                id="input-image"
+                className={classes.inputImage}
+                src={this.state.currentImage}
+                alt="sample being predicted"
+              />
+              <Gallery
+                images={this.state.images}
+                handleClick={this.handleImageClick}
+              />
+            </Grid>
+            <Grid className={classes.prediction} item xs={12} sm={5}>
+              <Button
+                className={classes.predictButton}
+                variant="contained"
+                fullWidth
+                color="primary"
+                disabled={this.state.currentImage === null}
+                onClick={this.handlePredictionClick}
+              >
+                predict
+              </Button>
+              <PredictionBox
+                result={this.state.result}
+                onLoading={this.state.onLoading}
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
-    </div>
-  );
+        </Container>
+      </div>
+    );
+  }
 }
+
+export default withStyles(useStyles)(Demo);
