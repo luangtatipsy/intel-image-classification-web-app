@@ -12,12 +12,14 @@ function generateRandomNumbers(numberOfImages, totalImages) {
   return randomNumbers;
 }
 
-const randomNumbers = generateRandomNumbers(numberOfImages, totalImages);
-const imagesData = randomNumbers.map((number, idx) => {
-  return {
-    id: idx + 1,
-    src: `${imagesDir}sample_${number}.jpg`,
-  };
-});
+export default function createImagesArray() {
+  const randomNumbers = generateRandomNumbers(numberOfImages, totalImages);
+  const imagesData = randomNumbers.map((number, idx) => {
+    return {
+      id: idx + 1,
+      src: `${imagesDir}sample_${number}.jpg`,
+    };
+  });
 
-export default imagesData;
+  return imagesData;
+}

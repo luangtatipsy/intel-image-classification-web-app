@@ -1,9 +1,16 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Button, Container, Grid, Typography } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  Grid,
+  Typography,
+  IconButton,
+} from "@material-ui/core";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import PredictionBox from "./components/PredictionBox";
 import Gallery from "./components/Gallery";
-import imagesData from "./components/imagesData";
+import createImagesArray from "./components/imagesData";
 import * as tf from "@tensorflow/tfjs";
 
 const useStyles = (theme) => ({
@@ -26,7 +33,7 @@ const useStyles = (theme) => ({
     width: "20%",
   },
   subtitle: {
-    marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(2),
     fontWeight: "bold",
     color: theme.palette.primary.dark,
   },
@@ -51,8 +58,9 @@ const useStyles = (theme) => ({
 class Demo extends React.Component {
   constructor() {
     super();
+    this.imagesData = createImagesArray();
     this.state = {
-      images: imagesData.map((image) => {
+      images: this.imagesData.map((image) => {
         return {
           ...image,
           selected: false,
@@ -78,6 +86,7 @@ class Demo extends React.Component {
     ];
 
     this.handleImageClick = this.handleImageClick.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
     this.handlePredictionClick = this.handlePredictionClick.bind(this);
   }
 
@@ -100,6 +109,18 @@ class Demo extends React.Component {
     return this.setState({
       currentImage: currentImage,
       images: updatedImages,
+    });
+  }
+
+  handleRefresh() {
+    const images = createImagesArray();
+    this.setState((prevState) => {
+      return {
+        images: images,
+        currentImage: prevState.currentImage,
+        result: prevState.result,
+        onLoading: prevState.onLoading,
+      };
     });
   }
 
@@ -162,14 +183,31 @@ class Demo extends React.Component {
           </Typography>
           <hr className={classes.divider} />
           <Grid container direction="row">
-            <Grid item xs={12} sm={7}>
-              <Typography
-                className={classes.subtitle}
-                variant="h5"
-                align="center"
-              >
-                Choose an Image
-              </Typography>
+            <Grid
+              container
+              item
+              xs={12}
+              sm={7}
+              justify="center"
+              alignItems="center"
+            >
+              <Grid item xs={8}>
+                <Typography
+                  className={classes.subtitle}
+                  variant="h5"
+                  align="left"
+                >
+                  Choose an Image
+                </Typography>
+              </Grid>
+              <Grid item xs={2} align="right">
+                <IconButton
+                  onClick={this.handleRefresh}
+                  disabled={this.state.onLoading}
+                >
+                  <RefreshIcon />
+                </IconButton>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -192,7 +230,9 @@ class Demo extends React.Component {
                 variant="contained"
                 fullWidth
                 color="primary"
-                disabled={this.state.currentImage === null}
+                disabled={
+                  this.state.currentImage === null || this.state.onLoading
+                }
                 onClick={this.handlePredictionClick}
               >
                 predict
