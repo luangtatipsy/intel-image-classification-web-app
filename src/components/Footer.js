@@ -1,5 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -51,7 +52,17 @@ export default function Footer() {
             variant="button"
             component={"span"}
           >
-            Made by luangtatipsy © {currentYear}
+            Made by{" "}
+            <span>
+              <Link
+                color="secondary"
+                href="https://luangtatipsy.github.io"
+                target="_blank"
+              >
+                luangtatipsy
+              </Link>
+            </span>{" "}
+            © {currentYear}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={4} align="center">
